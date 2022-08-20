@@ -70,7 +70,7 @@ class DashboardView: UIStackView {
         return containerVStack
     }()
     
-    private lazy var getButton: UIButton = {
+    lazy var getButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = UIButton.Configuration.filled()
