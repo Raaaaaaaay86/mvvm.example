@@ -30,9 +30,9 @@ class APIManager {
         APIManager.shared = self
     }
     
-    func GET<T: Codable>(
+    func GET_JSON<T: Codable>(
         _ url: URL?,
-        responseType: T.Type ,
+        responseDataType: T.Type ,
         completionBlock:((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Void)?
     ) {
         guard let url = url else {
@@ -58,11 +58,36 @@ class APIManager {
             decoder.dateDecodingStrategy = .formatted(dateFormatter)
             
             do {
-                let responseData = try decoder.decode(responseType, from: data)
+                let responseData = try decoder.decode(responseDataType, from: data)
                 completionBlock?(responseData, response, nil)
             } catch {
                 completionBlock?(nil, response, error)
             }
+        }.resume()
+    }
+    
+    func GET_DATA(
+        _ url: URL?,
+        completionBlock:((_ data: Data?, _ response: URLResponse?, _ error: Error?) -> Void)?
+    ) {
+        guard let url = url else {
+            completionBlock?(nil, nil, APIError.InvalidURL)
+            return
+        }
+        
+        let request = URLRequest(url: url, cachePolicy: cachePolicy, timeoutInterval: timeout)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completionBlock?(nil, nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+            
+            completionBlock?(data, response, nil)
         }.resume()
     }
 }
