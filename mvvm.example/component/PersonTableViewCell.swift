@@ -54,4 +54,33 @@ class PersonTableViewCell: UITableViewCell {
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16)
         ])
     }
+    
+    func updateView(imageURLString: String?, name: String?) {
+        if name == nameLabel.text {
+            return
+        }
+        
+        nameLabel.text = name
+        
+        APIManager.shared?.GET_DATA(
+            URL(string: imageURLString ?? ""),
+            completionBlock: { [weak self] data, response, error in
+                guard let self = self else {
+                    return
+                }
+                
+                if let _ = error {
+                    return
+                }
+                
+                guard let data = data else {
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.profileImage.image = UIImage(data: data)
+                }
+            }
+        )
+    }
 }
