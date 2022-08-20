@@ -15,6 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        APIManager.init(cachePolicy: .reloadIgnoringLocalCacheData, timeout: 30)
+        
         window = UIWindow()
         window?.windowScene = windowScene
        
