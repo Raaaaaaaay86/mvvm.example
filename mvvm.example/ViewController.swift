@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     private lazy var dashboardView: UIView = {
         let view = DashboardView()
+        view.getButton.addTarget(self, action: #selector(getNewRandomPerson(_:)), for: .touchUpInside)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -27,6 +28,8 @@ class ViewController: UIViewController {
     private lazy var personTableView: PersonTableView = {
         let tableView = PersonTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         return tableView
     }()
@@ -34,11 +37,23 @@ class ViewController: UIViewController {
     // MARK: Property
     private let cellIdentifier: String = "PersonTableViewCell"
     
+    private var viewModel: ViewControllerViewModelProtocol = ViewControllerViewModel()
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        bindViewModel()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
+    // MARK: Layout
     private func setupViews() {
         view.backgroundColor = .white
         
@@ -57,5 +72,49 @@ class ViewController: UIViewController {
             personTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    // MARK: Data
+    private func bindViewModel() {
+        self.viewModel.peopleListOnChange = { _ in
+            DispatchQueue.main.async { [weak self] in
+                self?.personTableView.reloadData()
+            }
+        }
+        
+        self.viewModel.showAlert = { message in
+            self.showAlert(message: message)
+        }
+    }
+    
+    // MARK: Button Action
+    @objc func getNewRandomPerson(_ sender: UIButton) {
+        self.viewModel.fetchNewPerson()
+    }
+    
+    // MARK: Methods
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.peopleList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PersonTableViewCell
+        
+        guard let person = viewModel.peopleList[indexPath.row] else {
+            return cell
+        }
+        
+        cell.updateView(imageURLString: person.picture?.medium, name: person.name?.first)
+        
+        return cell
+    }
+}
