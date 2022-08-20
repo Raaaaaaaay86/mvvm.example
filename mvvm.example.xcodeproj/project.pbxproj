@@ -22,6 +22,7 @@
 		DB3BE8C528B0CD4E00E1031E /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BE8C428B0CD4E00E1031E /* APIManager.swift */; };
 		DB3BE8C828B0CE8A00E1031E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BE8C728B0CE8A00E1031E /* Person.swift */; };
 		DB3BE8CA28B0D23B00E1031E /* RandomUserAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BE8C928B0D23B00E1031E /* RandomUserAPIResponse.swift */; };
+		DB3BE8CC28B0E2A400E1031E /* ViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BE8CB28B0E2A400E1031E /* ViewControllerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		DB3BE8C428B0CD4E00E1031E /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		DB3BE8C728B0CE8A00E1031E /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		DB3BE8C928B0D23B00E1031E /* RandomUserAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUserAPIResponse.swift; sourceTree = "<group>"; };
+		DB3BE8CB28B0E2A400E1031E /* ViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				DB3BE8C628B0CE4C00E1031E /* model */,
 				DB3BE8BD28B0B25100E1031E /* component */,
 				DB3BE89128B0B0DE00E1031E /* ViewController.swift */,
+				DB3BE8CB28B0E2A400E1031E /* ViewControllerViewModel.swift */,
 				DB3BE88D28B0B0DE00E1031E /* AppDelegate.swift */,
 				DB3BE88F28B0B0DE00E1031E /* SceneDelegate.swift */,
 				DB3BE8C428B0CD4E00E1031E /* APIManager.swift */,
@@ -299,6 +302,7 @@
 				DB3BE8C128B0B2AB00E1031E /* PersonTableViewCell.swift in Sources */,
 				DB3BE8CA28B0D23B00E1031E /* RandomUserAPIResponse.swift in Sources */,
 				DB3BE89028B0B0DE00E1031E /* SceneDelegate.swift in Sources */,
+				DB3BE8CC28B0E2A400E1031E /* ViewControllerViewModel.swift in Sources */,
 				DB3BE8C828B0CE8A00E1031E /* Person.swift in Sources */,
 				DB3BE8C528B0CD4E00E1031E /* APIManager.swift in Sources */,
 			);
