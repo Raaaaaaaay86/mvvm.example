@@ -32,7 +32,7 @@ struct Person: Codable {
         var city: String?
         var state: String?
         var country: String?
-        var postcode: String?
+        var postcode: Int?
         var coordinates: Coordinates?
         var timezone: Timezone?
         
@@ -62,12 +62,12 @@ struct Person: Codable {
     }
     
     struct DateOfBirth: Codable {
-        var data: String?
+        var date: Date?
         var age: Int?
     }
     
     struct Registered: Codable {
-        var data: String?
+        var date: Date?
         var age: Int?
     }
     
