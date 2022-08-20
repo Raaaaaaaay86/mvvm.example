@@ -68,27 +68,40 @@ class ViewControllerViewModel: ViewControllerViewModelProtocol {
     
     // MARK: Async API Function
     func fetchNewPerson() {
-        APIManager.shared?.GET_JSON(
-            API.GetRandomUser,
-            responseDataType: RandomUserAPIResponse.self,
-            completionBlock: { [weak self] data, response, error in
-                guard let self = self else {
-                    return
-                }
-                
-                if let error = error {
-                    self.showAlert?(error.localizedDescription)
-                    return
-                }
-                
-                guard let personData = data?.results?[0] else {
-                    self.showAlert?("NO DATA")
-                    return
-                }
-                
-                self.peopleList.append(personData)
-                self.peopleListOnChange?(self.peopleList)
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] (Timer) in
+            guard let self = self else {
+                return
             }
-        )
+            
+            if self.countdown > 0 {
+                self.decrementCountdown(1)
+                return
+            }
+            
+            Timer.invalidate()
+            
+            APIManager.shared?.GET_JSON(
+                API.GetRandomUser,
+                responseDataType: RandomUserAPIResponse.self,
+                completionBlock: { [weak self] data, response, error in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    if let error = error {
+                        self.showAlert?(error.localizedDescription)
+                        return
+                    }
+                    
+                    guard let personData = data?.results?[0] else {
+                        self.showAlert?("NO DATA")
+                        return
+                    }
+                    
+                    self.peopleList.append(personData)
+                    self.peopleListOnChange?(self.peopleList)
+                }
+            )
+        }
     }
 }
