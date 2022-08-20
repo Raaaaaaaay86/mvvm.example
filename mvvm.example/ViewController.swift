@@ -18,9 +18,11 @@ class ViewController: UIViewController {
         return label
     }()
     
-    private lazy var dashboardView: UIView = {
+    private lazy var dashboardView: DashboardView = {
         let view = DashboardView()
         view.getButton.addTarget(self, action: #selector(getNewRandomPerson(_:)), for: .touchUpInside)
+        view.incrementButton.addTarget(self, action: #selector(incrementCountdown(_:)), for: .touchUpInside)
+        view.decrementButton.addTarget(self, action: #selector(decrementCountdown(_:)), for: .touchUpInside)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -81,14 +83,32 @@ class ViewController: UIViewController {
             }
         }
         
-        self.viewModel.showAlert = { message in
-            self.showAlert(message: message)
+        self.viewModel.showAlert = { [weak self] message in
+            self?.showAlert(message: message)
+        }
+        
+        self.viewModel.countdownOnChange = { [weak self] newValue in
+            guard let self = self else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.dashboardView.countDownLabel.text = String(newValue)
+            }
         }
     }
     
     // MARK: Button Action
     @objc func getNewRandomPerson(_ sender: UIButton) {
         self.viewModel.fetchNewPerson()
+    }
+    
+    @objc func incrementCountdown(_ sender: UIButton) {
+        self.viewModel.incrementCountdown(1)
+    }
+    
+    @objc func decrementCountdown(_ sender: UIButton) {
+        self.viewModel.decrementCountdown(1)
     }
     
     // MARK: Methods

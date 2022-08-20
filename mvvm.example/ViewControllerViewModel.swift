@@ -14,6 +14,7 @@ protocol ViewControllerData {
 
 protocol ViewControllerNotifier {
     var peopleListOnChange: (([Person?]?) -> Void)? { get set }
+    var countdownOnChange: ((Int) -> Void)? { get set }
     var showAlert: ((_ message: String) -> Void)? { get set }
 }
 
@@ -38,20 +39,31 @@ class ViewControllerViewModel: ViewControllerViewModelProtocol {
     // MARK: Property
     var peopleList: [Person?] = []
     
-    var countdown: Int = 0
+    var countdown: Int = 0 {
+        didSet {
+            if countdown != oldValue {
+                countdownOnChange?(countdown)
+            }
+        }
+    }
     
     // MARK: Notifier
     var peopleListOnChange: (([Person?]?) -> Void)?
     
     var showAlert: ((String) -> Void)?
     
+    var countdownOnChange: ((Int) -> Void)?
+    
     // MARK: Mutation
     func decrementCountdown(_ value: Int) {
-        countdown += value
+        if countdown == 0 {
+            return
+        }
+        countdown -= value
     }
     
     func incrementCountdown(_ value: Int) {
-        countdown -= value
+        countdown += value
     }
     
     // MARK: Async API Function
